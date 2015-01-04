@@ -1,0 +1,8 @@
+## YAML Template.
+---
+index:
+    resource:  { _controller: 'DefaultController::principalAction' }
+    prefix:   /    
+artistas:
+    resource:  { _controller: 'DefaultController::buscaArtistasAction' }
+    prefix:   /artistas

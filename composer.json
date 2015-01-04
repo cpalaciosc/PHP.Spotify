@@ -1,0 +1,37 @@
+{
+    "name": "miw/ejemplo-dbal",
+    "description": "Práctica de PHP (incorpora Doctrine DBAL)",
+    "version": "0.4.2-dev",
+    "type": "project",
+    "keywords": [
+        "Doctrine DBAL", "REST API", "Bootstrap"
+    ],
+    "homepage": "http://www.etsisi.upm.es/estudios/master/miw/ig/",
+    "time": "2014-12-04",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Javier Gil",
+            "homepage": "http://www.etsisi.upm.es/",
+            "role": "Developer"
+        },
+        {
+            "name": "Alumnos MiW",
+            "homepage": "http://www.etsisi.upm.es/",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MiW\\PracticaPHP\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "doctrine/dbal": "2.5.0",
+        "symfony/routing": "2.6.0",
+        "symfony/config": "2.6.0",
+        "symfony/yaml": "2.6.0",
+        "symfony/expression-language": "2.6.0"
+    }
+}
