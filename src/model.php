@@ -74,7 +74,7 @@ class datosExternos
 
       return $info;
   }
-
+  
   /**
    * Obtiene el catálogo de álbumes de un artista en Spotify
    * @param string $artistaId Identificador del artista en Spotify
@@ -109,6 +109,21 @@ class datosExternos
 
       return $info['items'];
   }
+  
+  /**
+   * Obtiene la información de un tema concreto (identificado por $temaId)
+   * @param string $temaId Identificador del álbum en Spotify
+   * @return array Resultado de la búsqueda
+   * @link https://developer.spotify.com/web-api/get-track/ API Info
+   */
+  public static function obtenerTema($temaId)
+  {
+      $peticion = SPOTIFY_URL_API.'/v1/tracks/'.$temaId;
+      $datos = @file_get_contents($peticion);
+      $info = json_decode($datos, true);
+
+      return $info;
+  }  
   
     
     /**
@@ -235,7 +250,7 @@ class datosLocales
 
       return $resultado;
   }
-
+  
   /**
    * Recupera todos los usuarios
    *
@@ -272,9 +287,74 @@ class datosLocales
   public static function actualiza_usuario($usuario)
   {
       self::getInstance();
+      
+      $usuario['esAdmin'] = ($usuario['esAdmin']) ? 1 : 0;
 
       return self::$idDB->update('usuarios', $usuario, array('username' => $usuario['username']));
   }
+  
+  /**
+   * Gestiona los favoritos en la tabla
+   *
+   * @param $favorito id del favorito a guardar o eliminar
+   * @param $usuario id del usuario que guarda o elimina el favorito
+   * @param $tipo tipo de favorito album, tema o artista
+   * @return integer N&uacute;mero de filas afectadas
+   */  
+  public static function gestiona_favorito($favorito, $usuario, $tipo)
+  {
+      $resultado = 0;
+      self::getInstance();
+
+      $consulta = 'SELECT * FROM favoritos WHERE `id_usuario` = :usuario AND `favorito` = :favorito AND `tipo` = :tipo';
+      if (!self::$idDB->fetchAssoc($consulta, array('usuario' => $usuario, 'favorito' => $favorito, 'tipo' => $tipo))) {
+          $resultado = datosLocales::guarda_favorito($favorito, $usuario, $tipo);
+      }else
+      {
+          $resultado = datosLocales::elimina_favorito($favorito, $usuario, $tipo);
+      }
+
+      return $resultado;      
+  }
+  
+  private static function guarda_favorito($favorito, $usuario, $tipo)
+  {
+          $datos = array(
+            'id_usuario' => $usuario,
+            'favorito' => $favorito,
+            'tipo' => $tipo,
+            'create_time' => date('Y-m-d H:i:s'),
+        );
+         $resultado = self::$idDB->insert('favoritos', $datos);
+         return $resultado;
+  }
+  
+  private static function elimina_favorito($favorito, $usuario, $tipo)
+  {
+          $datos = array(
+            'id_usuario' => $usuario,
+            'favorito' => $favorito,
+            'tipo' => $tipo,
+        );
+        $resultado = self::$idDB->delete('favoritos', $datos);    
+        return $resultado;
+  }
+  
+ /**
+   * Recupera un favorito de la base de datos
+   *
+   * @param string $id_usuario Nombre del usuario
+   * @param string $tipo Tipo de favorito
+   * @return array() matriz asociativa recuperada
+   */
+  public static function recupera_favoritos($id_usuario, $tipo)
+  {
+      self::getInstance();
+
+      $consulta = 'SELECT * FROM favoritos WHERE `id_usuario` = :id_usuario AND `tipo` = :tipo';
+
+      return self::$idDB->fetchAll($consulta, array('id_usuario' => $id_usuario, 'tipo' => $tipo));
+  }  
 
   /**
    * is not allowed to call from outside: private!

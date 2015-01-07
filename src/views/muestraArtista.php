@@ -39,7 +39,7 @@ ____MARCA_FINAL;
         <h1>
             <small><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Intérprete:</small>
             <mark><?= $infoArtista['name'] ?></mark>
-            <a href="favorito/artist/nuevo/<?= $infoArtista['id'] ?>">
+            <a href="favorito/artist/gestionar/<?= $infoArtista['id'] ?>">
                 <span class="glyphicon glyphicon-star-empty" aria-hidden="true" title="Marcar Favorito"></span>
             </a>
         </h1>

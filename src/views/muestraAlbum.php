@@ -39,7 +39,7 @@ ____MARCA_FINAL;
         <h1>
             <small><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Álbum:</small>
             <mark><?= $infoAlbum['name'] ?></mark>
-              <a href="favorito/album/nuevo/<?= $infoAlbum['id'] ?>">
+              <a href="favorito/album/gestionar/<?= $infoAlbum['id'] ?>">
                   <span class="glyphicon glyphicon-star-empty" aria-hidden="true" title="Marcar Favorito"></span>
               </a>
             <br>

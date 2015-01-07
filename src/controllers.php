@@ -182,3 +182,98 @@ function sinImplementarAction($path)
 {
   require 'views/noImplementado.php';
 }
+
+/**
+ * Guarda como favorito el artista recibido como parametro
+ * Si el favorito ya existe lo elimina
+ */
+function gestionarArtistaFavorito($artistaId)
+{
+    $usuario = datosLocales::recupera_usuario($_SESSION['usuario']);
+    $tipo = "A";
+    datosLocales::gestiona_favorito($artistaId, $usuario["id"], $tipo);
+    listadoArtistasFavoritos();
+}
+
+/**
+ * Guarda como favorito el album recibido como parametro
+ * Si el favorito ya existe lo elimina
+ */
+function gestionarAlbumFavorito($albumId)
+{
+    $usuario = datosLocales::recupera_usuario($_SESSION['usuario']);
+    $tipo = "B";
+    datosLocales::gestiona_favorito($albumId, $usuario["id"], $tipo);
+    listadoAlbumesFavoritos();
+}
+
+/**
+ * Guarda como favorito el tema recibido como parametro
+ * Si el favorito ya existe lo elimina
+ */
+function gestionarTemaFavorito($temaId)
+{
+    $usuario = datosLocales::recupera_usuario($_SESSION['usuario']);
+    $tipo = "T";
+    datosLocales::gestiona_favorito($temaId, $usuario["id"], $tipo);
+    listadoTemasFavoritos();
+}
+
+function listadoArtistasFavoritos()
+{
+    $usuario = datosLocales::recupera_usuario($_SESSION['usuario']);
+    $tipo = "A";
+    $favoritos_usuario = datosLocales::recupera_favoritos($usuario["id"], $tipo);
+    $favoritos = array();
+    foreach($favoritos_usuario as $favorito)
+    {
+
+            $item = datosExternos::obtenerArtista($favorito["favorito"]);
+            array_push($favoritos, $item);
+
+    }
+    require 'views/muestraListadoArtistasFavoritos.php';
+}
+
+function listadoAlbumesFavoritos()
+{
+    $usuario = datosLocales::recupera_usuario($_SESSION['usuario']);
+    $tipo = "B";
+    $favoritos_usuario = datosLocales::recupera_favoritos($usuario["id"], $tipo);
+    $favoritos = array();
+    foreach($favoritos_usuario as $favorito)
+    {
+        $item = datosExternos::obtenerAlbum($favorito["favorito"]);
+        array_push($favoritos, $item);
+    }
+    require 'views/muestraListadoAlbumesFavoritos.php';
+}
+
+function listadoTemasFavoritos()
+{
+    $usuario = datosLocales::recupera_usuario($_SESSION['usuario']);
+    $tipo = "T";
+    $favoritos_usuario = datosLocales::recupera_favoritos($usuario["id"], $tipo);
+    $favoritos = array();
+    foreach($favoritos_usuario as $favorito)
+    {
+        $item = datosExternos::obtenerTema($favorito["favorito"]);
+        array_push($favoritos, $item);
+    }
+    require 'views/muestraListadoTemasFavoritos.php';
+}
+
+/*
+ * Consulta el usuario que se va a actualizar y muestra formulario con los datos
+ */
+function muestraActualizarUsuarioAction($usuarioId)
+{
+    $usuario = datosLocales::recupera_usuario($usuarioId);
+    require 'views/muestraActualizaUsuario.php';
+}
+
+function actualizarUsuarioAction($usuario)
+{
+  @datosLocales::actualiza_usuario($usuario);
+  listadoUsuariosAction();    
+}

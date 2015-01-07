@@ -60,13 +60,13 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
         if (isset($_SESSION['usuario'])):
           switch ($peticion[2]) {
             case 'artistas': # /favoritos/artistas
-              sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
+              listadoArtistasFavoritos();
               break;
             case 'albumes': # /favoritos/albumes
-              sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
+              listadoAlbumesFavoritos();                
               break;
             case 'temas': # /favoritos/temas
-              sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
+              listadoTemasFavoritos();   
               break;
             default :
               sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
@@ -91,6 +91,9 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
             case 'nuevo': # /usuario/nuevo
               muestraNuevoUsuarioAction();
               break;
+            case 'mostrar': # /usuario/mostrar/id
+              muestraActualizarUsuarioAction($peticion[3]);
+              break;  
             default :
               sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
               break;
@@ -99,6 +102,27 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
           errorAccesoAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
         endif;
         break;
+        
+      case 'favorito':
+        if (isset($_SESSION['usuario'])):
+          switch ($peticion[2]) {
+            case 'artist': # /favorito/artist/gestionar/{id}
+              gestionarArtistaFavorito($peticion[4]);
+              break;
+            case 'album': # /favorito/album/gestionar/{id}
+              gestionarAlbumFavorito($peticion[4]);
+              break;
+            case 'tema': # /favorito/tema/gestionar/{id}
+              gestionarTemaFavorito($peticion[4]);
+              break;
+            default :
+              sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
+              break;
+            }
+        else:
+          errorAccesoAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
+        endif;
+        break;       
         
       default :
         sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
@@ -150,6 +174,9 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
             case 'nuevo': # /usuario/nuevo usuario={array}
               insertarNuevoUsuarioAction($_POST['usuario']);
               break;
+            case 'actualizar': # /usuario/actualizar
+              actualizarUsuarioAction($_POST['usuario']);
+              break;           
             default :
               sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
               break;

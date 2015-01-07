@@ -1,6 +1,6 @@
 <?php // views/muestraListadoArtistas.php
 
-  $titulo = 'temas encontrados';
+  $titulo = 'temas favoritos encontrados';
 
   ob_start();
 ?>
@@ -27,18 +27,18 @@ function duracion($milisegundos)
       <div class="panel-heading">
         <h1>
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
-            Temas: <small>Resultado de la búsqueda</small>
+            Temas favoritos
         </h1>
-        <p class="lead">Resultados de la búsqueda de sus temas preferidos.</p>
+        <p class="lead">Temas que usted considera favoritos.</p>
       </div>
       <div class="panel-body">
         <div class="table-responsive">          
           <?php
-            if (count($temas['tracks']['items']) > 0):
+            if (count($favoritos) > 0):
               // Hay artistas
               print '<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
              
-              foreach ($temas['tracks']['items'] as $indice=>$tema) {
+              foreach ($favoritos as $indice=>$tema) {
                 $numtema = sprintf("%02d", $tema['track_number']);
                 $numdisco = sprintf("%02d", $tema['disc_number']);
                 $id = $tema['id'];
@@ -83,7 +83,7 @@ ________________MARCA;
                                  <div class='row'>
                                    <div class='col-sm-1'>
                                      <a href="/favorito/tema/gestionar/$tema[id]">
-                                       <span class="glyphicon glyphicon-star-empty" aria-hidden="true" title="Marcar Favorito"></span>
+                                       <span class="glyphicon glyphicon-star" aria-hidden="true" title="Marcar Favorito"></span>
                                      </a>
                                     </div>
                                     <div class='col-sm-3'>
