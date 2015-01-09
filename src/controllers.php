@@ -17,6 +17,14 @@ function principalAction()
 }
 
 /**
+ * Muestra la pagina de mas informacion de la aplicación
+ */
+function masInfoAction()
+{
+    require 'views/masInfo.php';
+}
+
+/**
  * Muestra el formulario para buscar un artista
  */
 function buscaArtistasAction()

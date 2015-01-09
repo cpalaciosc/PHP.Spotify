@@ -17,7 +17,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
         break;
       
       case 'mas_info': # Información general sobre la aplicación
-        sinImplementarAction(filter_input(INPUT_SERVER, 'PATH_INFO'));
+        masInfoAction();
         break;
       
       case 'artistas': # /artistas
